@@ -1,0 +1,702 @@
+/* ==================================================
+   ADMIN PAGE
+================================================== */
+
+.admin-page {
+  min-height: 100vh;
+  background: #f4f7f9;
+  display: flex;
+  color: #333;
+}
+
+/* ==================================================
+   SIDEBAR
+================================================== */
+
+.admin-sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: #1f4e79;
+  color: white;
+  padding: 24px 18px;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 20;
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.admin-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: white;
+  color: #1f4e79;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.admin-brand strong,
+.admin-brand span {
+  display: block;
+}
+
+.admin-brand span {
+  font-size: 11px;
+  opacity: 0.75;
+  margin-top: 3px;
+}
+
+.admin-sidebar nav {
+  display: grid;
+  gap: 7px;
+}
+
+.admin-sidebar nav button,
+.admin-logout {
+  border: 0;
+  background: transparent;
+  color: white;
+  text-align: left;
+  padding: 13px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 14px;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-sidebar nav button:hover,
+.admin-sidebar nav button.active {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.admin-sidebar nav button:hover {
+  transform: translateX(2px);
+}
+
+.admin-logout {
+  position: absolute;
+  bottom: 24px;
+  left: 18px;
+  right: 18px;
+  background: #173a5b;
+  text-align: center;
+}
+
+.admin-logout:hover {
+  background: #122f49;
+}
+
+/* ==================================================
+   MAIN
+================================================== */
+
+.admin-main {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  min-height: 100vh;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.admin-header {
+  background: white;
+  padding: 28px 35px;
+  border-bottom: 1px solid #e2e8ec;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-header p {
+  color: #2c9ab7;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin: 0 0 5px;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 27px;
+  color: #1f4e79;
+}
+
+.admin-user {
+  text-align: right;
+}
+
+.admin-user strong,
+.admin-user span {
+  display: block;
+}
+
+.admin-user span {
+  color: #77838c;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* ==================================================
+   CONTENT
+================================================== */
+
+.admin-content {
+  padding: 30px 35px;
+}
+
+/* ==================================================
+   STATISTICS
+================================================== */
+
+.admin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.admin-stat {
+  background: white;
+  padding: 23px;
+  border-radius: 14px;
+  border: 1px solid #e1e8ed;
+  box-shadow: 0 5px 18px rgba(31, 78, 121, 0.05);
+}
+
+.admin-stat span {
+  display: block;
+  color: #71808a;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.admin-stat strong {
+  color: #1f4e79;
+  font-size: 32px;
+}
+
+.admin-stat.warning {
+  border-left: 4px solid #d4af37;
+}
+
+/* ==================================================
+   PANELS
+================================================== */
+
+.admin-panel {
+  background: white;
+  border-radius: 15px;
+  border: 1px solid #e1e8ed;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 5px 18px rgba(31, 78, 121, 0.04);
+}
+
+.admin-panel h2 {
+  color: #1f4e79;
+  margin-top: 0;
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ==================================================
+   TABLES
+================================================== */
+
+.admin-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  min-width: 700px;
+}
+
+.admin-panel th,
+.admin-panel td {
+  padding: 13px 10px;
+  text-align: left;
+  border-bottom: 1px solid #edf1f3;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.admin-panel th {
+  color: #1f4e79;
+  background: #f7fafb;
+  font-weight: 700;
+}
+
+.admin-panel tbody tr:hover {
+  background: #fbfdfe;
+}
+
+/* ==================================================
+   STATUS
+================================================== */
+
+.status-badge {
+  padding: 5px 9px;
+  background: #eef6f8;
+  color: #1f4e79;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ==================================================
+   BUTTONS
+================================================== */
+
+.approve-button,
+.reject-button,
+.delete-button,
+.primary-admin-button,
+.message-actions button {
+  border: 0;
+  border-radius: 7px;
+  padding: 8px 11px;
+  cursor: pointer;
+  margin: 2px;
+  font-size: 12px;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.approve-button:hover,
+.reject-button:hover,
+.delete-button:hover,
+.primary-admin-button:hover,
+.message-actions button:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.approve-button {
+  background: #2c9ab7;
+  color: white;
+}
+
+.reject-button,
+.delete-button {
+  background: #f0e5e5;
+  color: #a33;
+}
+
+.primary-admin-button {
+  background: #1f4e79;
+  color: white;
+  font-weight: 700;
+}
+
+.primary-admin-button:hover {
+  background: #163b5c;
+}
+
+/* ==================================================
+   ALERTS
+================================================== */
+
+.admin-alert {
+  margin: 20px 35px 0;
+  background: #eaf6f8;
+  border-left: 4px solid #2c9ab7;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-radius: 6px;
+}
+
+.admin-alert button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.success-alert {
+  background: #eaf7f1;
+  border-left-color: #2c9ab7;
+}
+
+.error-alert {
+  background: #fff0f0;
+  border-left-color: #b43b3b;
+  color: #8d2525;
+}
+
+/* ==================================================
+   LOADING
+================================================== */
+
+.admin-loading {
+  padding: 30px;
+  text-align: center;
+  color: #1f4e79;
+  font-weight: 600;
+}
+
+/* ==================================================
+   FORMS
+================================================== */
+
+.admin-form {
+  margin: 25px 0;
+  padding: 25px;
+  background: #f7fafb;
+  border: 1px solid #dfe8ed;
+  border-radius: 12px;
+}
+
+.admin-form h3 {
+  color: #1f4e79;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.admin-form label {
+  display: block;
+  color: #333;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 15px 0 7px;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 13px;
+  border: 1px solid #d5dfe5;
+  border-radius: 7px;
+  background: white;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+  border-color: #2c9ab7;
+  box-shadow: 0 0 0 3px rgba(44, 154, 183, 0.1);
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.form-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500 !important;
+}
+
+.checkbox-label input {
+  width: auto;
+}
+
+/* ==================================================
+   IMAGE UPLOAD
+================================================== */
+
+.upload-section {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px dashed #b9ccd6;
+  background: white;
+  border-radius: 10px;
+}
+
+.upload-section label {
+  margin-top: 0;
+}
+
+.upload-section input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+  background: #f9fbfc;
+}
+
+.upload-section small {
+  display: block;
+  margin-top: 7px;
+  color: #74818a;
+  font-size: 12px;
+}
+
+.image-preview {
+  margin-top: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.image-preview img {
+  width: 220px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 9px;
+  border: 1px solid #d8e3e9;
+  background: #f4f7f9;
+}
+
+.remove-image-button {
+  border: 0;
+  background: #f0e5e5;
+  color: #a33;
+  border-radius: 7px;
+  padding: 9px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.remove-image-button:hover {
+  background: #ead6d6;
+}
+
+/* ==================================================
+   TABLE IMAGE THUMBNAILS
+================================================== */
+
+.admin-thumb {
+  width: 65px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #d8e3e9;
+  display: block;
+}
+
+/* ==================================================
+   SAVE BUTTON
+================================================== */
+
+.save-admin-button {
+  margin-top: 20px;
+  border: 0;
+  background: #1f4e79;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.save-admin-button:hover {
+  background: #163b5c;
+}
+
+.save-admin-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==================================================
+   SELECT
+================================================== */
+
+.admin-panel select {
+  padding: 7px;
+  border: 1px solid #d5dfe5;
+  border-radius: 6px;
+  background: white;
+}
+
+/* ==================================================
+   CONTACT MESSAGES
+================================================== */
+
+.message-list {
+  display: grid;
+  gap: 15px;
+}
+
+.message-card {
+  border: 1px solid #e2e8ec;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.message-card.unread {
+  border-left: 4px solid #d4af37;
+}
+
+.message-card > div:first-child {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.message-card > div:first-child span {
+  color: #74818a;
+  font-size: 13px;
+}
+
+.message-card h3 {
+  color: #1f4e79;
+  margin-bottom: 8px;
+}
+
+.message-card p {
+  line-height: 1.6;
+  color: #4e5960;
+  white-space: pre-wrap;
+}
+
+.message-actions {
+  margin-top: 15px;
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: 210px;
+  }
+
+  .admin-main {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+  }
+
+  .admin-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-content {
+    padding: 25px;
+  }
+
+  .admin-header {
+    padding: 25px;
+  }
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 650px) {
+  .admin-sidebar {
+    position: static;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .admin-page {
+    display: block;
+  }
+
+  .admin-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .admin-sidebar nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-logout {
+    position: static;
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .admin-header {
+    padding: 22px;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .admin-header h1 {
+    font-size: 22px;
+  }
+
+  .admin-user {
+    text-align: right;
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+
+  .admin-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-panel {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .panel-heading {
+    align-items: flex-start;
+  }
+
+  .panel-heading h2 {
+    font-size: 20px;
+  }
+
+  .form-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form {
+    padding: 18px;
+  }
+
+  .admin-alert {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .image-preview img {
+    width: 100%;
+    max-width: 300px;
+    height: 170px;
+  }
+}

@@ -1,0 +1,372 @@
+.member-dashboard-page {
+  min-height: 100vh;
+  background: #f4f7f9;
+  color: #333;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.member-dashboard-header {
+  background: #1f4e79;
+  color: white;
+  padding: 35px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.member-dashboard-label {
+  display: block;
+  color: #d4af37;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  margin-bottom: 8px;
+}
+
+.member-dashboard-header h1 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.member-dashboard-header p {
+  margin: 10px 0 0;
+  max-width: 650px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.6;
+}
+
+.member-signout-button {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 11px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.member-signout-button:hover {
+  background: white;
+  color: #1f4e79;
+}
+
+/* ==================================================
+   CONTENT
+================================================== */
+
+.member-dashboard-content {
+  width: min(1180px, 92%);
+  margin: 0 auto;
+  padding: 35px 0 60px;
+}
+
+/* ==================================================
+   LOADING
+================================================== */
+
+.member-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: #1f4e79;
+  font-weight: 700;
+}
+
+/* ==================================================
+   ALERT
+================================================== */
+
+.member-alert {
+  padding: 14px 18px;
+  border-radius: 9px;
+  margin-bottom: 22px;
+}
+
+.member-error {
+  background: #fff0f0;
+  border-left: 4px solid #b43b3b;
+  color: #8d2525;
+}
+
+/* ==================================================
+   MEMBERSHIP REVIEW
+================================================== */
+
+.membership-review-card,
+.membership-approved-card,
+.membership-rejected-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 25px;
+  border-radius: 14px;
+  margin-bottom: 30px;
+  border: 1px solid;
+}
+
+.membership-review-card {
+  background: #fffaf0;
+  border-color: #eadcae;
+}
+
+.membership-approved-card {
+  background: #edf9f3;
+  border-color: #b9dfca;
+}
+
+.membership-rejected-card {
+  background: #fff2f2;
+  border-color: #e7c3c3;
+}
+
+.membership-review-icon,
+.membership-approved-icon,
+.membership-rejected-icon {
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.membership-review-icon {
+  background: #d4af37;
+  color: white;
+}
+
+.membership-approved-icon {
+  background: #2c9ab7;
+  color: white;
+}
+
+.membership-rejected-icon {
+  background: #b43b3b;
+  color: white;
+}
+
+.membership-status-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1.3px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.membership-review-card .membership-status-label {
+  color: #927618;
+}
+
+.membership-approved-card .membership-status-label {
+  color: #19734c;
+}
+
+.membership-rejected-card .membership-status-label {
+  color: #a33;
+}
+
+.membership-review-card h2,
+.membership-approved-card h2,
+.membership-rejected-card h2 {
+  margin: 0;
+  color: #1f4e79;
+  font-size: 21px;
+}
+
+.membership-review-card p,
+.membership-approved-card p,
+.membership-rejected-card p {
+  margin: 8px 0 0;
+  line-height: 1.6;
+  color: #58656d;
+}
+
+/* ==================================================
+   RESOURCE CARDS
+================================================== */
+
+.member-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.member-resource-card {
+  background: white;
+  border: 1px solid #e0e8ed;
+  border-radius: 15px;
+  padding: 25px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  gap: 20px;
+  min-height: 190px;
+  box-sizing: border-box;
+  box-shadow: 0 5px 20px rgba(31, 78, 121, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.member-resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(31, 78, 121, 0.09);
+}
+
+.member-resource-icon,
+.resource-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  border-radius: 13px;
+  background: #eef6f8;
+  display: grid;
+  place-items: center;
+  font-size: 25px;
+}
+
+.member-resource-content {
+  flex: 1;
+}
+
+.member-resource-content h2,
+.member-resource-card h3 {
+  margin: 0 0 9px;
+  color: #1f4e79;
+  font-size: 20px;
+}
+
+.member-resource-content p,
+.member-resource-card p {
+  margin: 0 0 20px;
+  color: #66747c;
+  line-height: 1.6;
+}
+
+.member-resource-button {
+  border: 0;
+  background: #1f4e79;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.member-resource-button:hover {
+  background: #163b5c;
+}
+
+/* ==================================================
+   INFORMATION PANEL
+================================================== */
+
+.member-information-panel {
+  margin-top: 25px;
+  background: white;
+  border: 1px solid #e0e8ed;
+  border-radius: 14px;
+  padding: 22px 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.member-information-panel div {
+  border-right: 1px solid #e5ebee;
+  padding-right: 20px;
+}
+
+.member-information-panel div:last-child {
+  border-right: 0;
+}
+
+.member-information-panel span {
+  display: block;
+  color: #77838c;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+
+.member-information-panel strong {
+  color: #1f4e79;
+  word-break: break-word;
+}
+
+.member-status {
+  text-transform: capitalize;
+}
+
+.member-status.approved {
+  color: #198754;
+}
+
+.member-status.pending {
+  color: #a17b00;
+}
+
+.member-status.rejected,
+.member-status.suspended {
+  color: #b43b3b;
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 750px) {
+  .member-dashboard-header {
+    padding: 28px 5%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .member-dashboard-header h1 {
+    font-size: 26px;
+  }
+
+  .member-signout-button {
+    width: 100%;
+  }
+
+  .member-resource-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .member-information-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .member-information-panel div {
+    border-right: 0;
+    border-bottom: 1px solid #e5ebee;
+    padding-right: 0;
+    padding-bottom: 15px;
+  }
+
+  .member-information-panel div:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .member-resource-card {
+    flex-direction: column;
+  }
+
+  .membership-review-card,
+  .membership-approved-card,
+  .membership-rejected-card {
+    flex-direction: column;
+  }
+}
