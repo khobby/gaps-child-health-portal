@@ -1,22 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./AdminDashboard.css";
+import { getImageUrl } from "../utils/imageUrl";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-function getImageUrl(imageUrl) {
-  if (!imageUrl) {
-    return "";
-  }
-
-  if (
-    imageUrl.startsWith("http://") ||
-    imageUrl.startsWith("https://")
-  ) {
-    return imageUrl;
-  }
-
-  return `${API_URL}${imageUrl}`;
-}
 
 function AdminDashboard({ member, onLogout }) {
   const [section, setSection] = useState("overview");
@@ -76,7 +62,7 @@ function AdminDashboard({ member, onLogout }) {
   // API HELPER
   // --------------------------------------------------
 
-  async function apiFetch(endpoint, options = {}) {
+  const apiFetch = useCallback(async (endpoint, options = {}) => {
     const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers: {
@@ -101,13 +87,13 @@ function AdminDashboard({ member, onLogout }) {
     }
 
     return data;
-  }
+  }, [token]);
 
   // --------------------------------------------------
   // LOAD ADMIN DATA
   // --------------------------------------------------
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -137,11 +123,21 @@ function AdminDashboard({ member, onLogout }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [apiFetch]);
 
   useEffect(() => {
-    loadData();
-  }, []);
+    let cancelled = false;
+
+    void Promise.resolve().then(() => {
+      if (!cancelled) {
+        void loadData();
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loadData]);
 
   // --------------------------------------------------
   // GENERAL

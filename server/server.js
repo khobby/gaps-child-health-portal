@@ -18,15 +18,21 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, "uploads");
 
 // --------------------------------------------------
 // SECURITY
 // --------------------------------------------------
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: {
+      policy: "cross-origin"
+    }
+  })
+);
 
 // --------------------------------------------------
 // CORS
@@ -35,8 +41,11 @@ app.use(helmet());
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "https://samuel-presently-congress-compliance.trycloudflare.com"
+      /^http:\/\/(?:localhost|127\.0\.0\.1):\d+$/,
+      ...(process.env.CORS_ORIGINS || "https://samuel-presently-congress-compliance.trycloudflare.com")
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean)
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -56,7 +65,7 @@ app.use(express.json({ limit: "10mb" }));
 
 app.use(
   "/uploads",
-  express.static(path.join(__dirname, "uploads"))
+  express.static(uploadDir)
 );
 
 // --------------------------------------------------
@@ -121,6 +130,10 @@ app.use((req, res) => {
 
 app.use((error, req, res, next) => {
   console.error("Server error:", error);
+
+  if (res.headersSent) {
+    return next(error);
+  }
 
   if (error?.code === "LIMIT_FILE_SIZE") {
     return res.status(400).json({

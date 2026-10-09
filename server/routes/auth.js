@@ -14,17 +14,26 @@ router.post("/register", async (req, res) => {
       password,
       phone,
       specialty
-    } = req.body;
+    } = req.body || {};
 
-    if (!firstName || !lastName || !email || !password) {
+    if (
+      !firstName ||
+      !lastName ||
+      typeof email !== "string" ||
+      !email.trim() ||
+      typeof password !== "string" ||
+      !password
+    ) {
       return res.status(400).json({
         message: "Please provide all required fields"
       });
     }
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     const existingUser = await pool.query(
       "SELECT id FROM members WHERE email = $1",
-      [email.toLowerCase()]
+      [normalizedEmail]
     );
 
     if (existingUser.rows.length > 0) {
@@ -43,7 +52,7 @@ router.post("/register", async (req, res) => {
       [
         firstName,
         lastName,
-        email.toLowerCase(),
+        normalizedEmail,
         passwordHash,
         phone || null,
         specialty || null
@@ -80,11 +89,22 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
+
+    if (
+      typeof email !== "string" ||
+      !email.trim() ||
+      typeof password !== "string" ||
+      !password
+    ) {
+      return res.status(400).json({
+        message: "Email and password are required"
+      });
+    }
 
     const result = await pool.query(
       "SELECT * FROM members WHERE email = $1",
-      [email.toLowerCase()]
+      [email.trim().toLowerCase()]
     );
 
     if (result.rows.length === 0) {

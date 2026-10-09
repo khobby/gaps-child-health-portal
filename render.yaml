@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: gaps-childhealth-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: gaps-childhealth-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gaps-childhealth-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: gaps-childhealth-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: gaps-childhealth-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: gaps-childhealth-db
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://gaps-childhealth-web.onrender.com
+      - key: UPLOAD_DIR
+        value: /tmp/gaps-uploads
+
+  - type: static
+    name: gaps-childhealth-web
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://gaps-childhealth-api.onrender.com
+
+databases:
+  - name: gaps-childhealth-db
+    databaseName: gaps_childhealth
+    user: gaps_childhealth
+    plan: free

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./MemberDashboard.css";
+import { getImageUrl } from "../utils/imageUrl";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -7,50 +8,62 @@ function MemberDashboard({ member, onLogout, onNavigate }) {
   const [profile, setProfile] = useState(member);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [profileImageFailed, setProfileImageFailed] = useState(false);
 
   const token = localStorage.getItem("gapsToken");
 
-  async function loadProfile() {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await fetch(
-        `${API_URL}/api/members/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Unable to load member profile."
-        );
-      }
-
-      setProfile(data);
-
-      // Keep localStorage synchronized with the
-      // latest membership status from PostgreSQL.
-      localStorage.setItem(
-        "gapsMember",
-        JSON.stringify(data)
-      );
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    loadProfile();
-  }, []);
+    let cancelled = false;
+
+    async function loadProfile() {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/members/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Unable to load member profile."
+          );
+        }
+
+        if (cancelled) {
+          return;
+        }
+
+        setProfile(data);
+
+        localStorage.setItem(
+          "gapsMember",
+          JSON.stringify(data)
+        );
+      } catch (err) {
+        if (cancelled) {
+          return;
+        }
+
+        console.error(err);
+        setError(err.message);
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   const membershipStatus =
     profile?.membership_status ||
@@ -68,6 +81,12 @@ function MemberDashboard({ member, onLogout, onNavigate }) {
 
   const isPending =
     membershipStatus === "pending";
+
+  const firstName =
+    profile?.first_name || profile?.firstName || "";
+  const lastName =
+    profile?.last_name || profile?.lastName || "";
+  const profileImageUrl = getImageUrl(profile?.profile_image_url);
 
   function goTo(page) {
     if (onNavigate) {
@@ -93,10 +112,24 @@ function MemberDashboard({ member, onLogout, onNavigate }) {
             GAPS MEMBER PORTAL
           </span>
 
-          <h1>
-            Welcome, {profile?.first_name || profile?.firstName}{" "}
-            {profile?.last_name || profile?.lastName}
-          </h1>
+          <div className="member-dashboard-welcome">
+            {profileImageUrl && !profileImageFailed ? (
+              <img
+                className="member-dashboard-avatar"
+                src={profileImageUrl}
+                alt={`${firstName} ${lastName}`.trim()}
+                onError={() => setProfileImageFailed(true)}
+              />
+            ) : (
+              <div className="member-dashboard-avatar member-dashboard-avatar-fallback" aria-hidden="true">
+                {(firstName || "M").charAt(0).toUpperCase()}
+              </div>
+            )}
+
+            <h1>
+              Welcome, {firstName} {lastName}
+            </h1>
+          </div>
 
           <p>
             Access your professional membership,

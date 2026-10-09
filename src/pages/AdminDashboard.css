@@ -620,7 +620,7 @@
    MOBILE
 ================================================== */
 
-@media (max-width: 650px) {
+@media (max-width: 760px) {
   .admin-sidebar {
     position: static;
     width: 100%;
@@ -650,6 +650,7 @@
     padding: 22px;
     gap: 15px;
     align-items: flex-start;
+    flex-direction: column;
   }
 
   .admin-header h1 {
@@ -657,7 +658,7 @@
   }
 
   .admin-user {
-    text-align: right;
+    text-align: left;
   }
 
   .admin-content {

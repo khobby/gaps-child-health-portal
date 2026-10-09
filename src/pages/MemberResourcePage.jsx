@@ -2,21 +2,9 @@ import { useEffect, useState } from "react";
 import "./MemberDashboard.css";
 import "./MemberResourcePage.css";
 import gapsLogo from "../assets/gaps-logo.png";
+import { getImageUrl } from "../utils/imageUrl";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-function getImageUrl(imageUrl) {
-  if (!imageUrl) return "";
-
-  if (
-    imageUrl.startsWith("http://") ||
-    imageUrl.startsWith("https://")
-  ) {
-    return imageUrl;
-  }
-
-  return `${API_URL}${imageUrl}`;
-}
 
 function MemberResourcePage({
   type,
@@ -31,6 +19,7 @@ function MemberResourcePage({
   const [error, setError] = useState("");
 
   const [profile, setProfile] = useState(member || null);
+  const [profileHeaderImageFailed, setProfileHeaderImageFailed] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -242,6 +231,7 @@ function MemberResourcePage({
       }
 
       setProfile(data.member);
+      setProfileHeaderImageFailed(false);
 
       localStorage.setItem(
         "gapsMember",
@@ -290,14 +280,7 @@ function MemberResourcePage({
       return "";
     }
 
-    if (
-      profile.profile_image_url.startsWith("http://") ||
-      profile.profile_image_url.startsWith("https://")
-    ) {
-      return profile.profile_image_url;
-    }
-
-    return `${API_URL}${profile.profile_image_url}`;
+    return getImageUrl(profile.profile_image_url);
   }
 
   const memberFirstName =
@@ -313,6 +296,13 @@ function MemberResourcePage({
   const memberName =
     `${memberFirstName} ${memberLastName}`.trim() ||
     "GAPS Member";
+
+  const headerMember = profile || member;
+  const headerFirstName =
+    headerMember?.first_name || headerMember?.firstName || "";
+  const headerLastName =
+    headerMember?.last_name || headerMember?.lastName || "";
+  const headerImageUrl = getImageUrl(headerMember?.profile_image_url);
 
   const membershipStatus =
     profile?.membership_status ||
@@ -340,26 +330,26 @@ function MemberResourcePage({
         <div className="member-account">
           <div className="member-account-info">
             <strong>
-              {member.first_name || member.firstName}{" "}
-              {member.last_name || member.lastName}
+            {headerFirstName} {headerLastName}
             </strong>
 
             <span>
-              {member.membership_status ||
-                member.membershipStatus ||
-                "Member"}
+            {headerMember?.membership_status ||
+              headerMember?.membershipStatus ||
+              "Member"}
             </span>
           </div>
 
           <div className="member-profile-photo">
-            {member.profile_image_url ? (
+            {headerImageUrl && !profileHeaderImageFailed ? (
               <img
-                src={getImageUrl(member.profile_image_url)}
-                alt="Member profile"
+                src={headerImageUrl}
+                alt={`${headerFirstName} ${headerLastName}`.trim()}
+                onError={() => setProfileHeaderImageFailed(true)}
               />
             ) : (
               <div className="member-profile-placeholder">
-                {(member.first_name || member.firstName || "M")
+                {(headerFirstName || "M")
                   .charAt(0)
                   .toUpperCase()}
               </div>

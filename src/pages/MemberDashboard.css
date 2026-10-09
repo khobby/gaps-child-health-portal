@@ -27,6 +27,31 @@
   margin-bottom: 8px;
 }
 
+.member-dashboard-welcome {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.member-dashboard-avatar {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eaf4fa;
+}
+
+.member-dashboard-avatar-fallback {
+  display: grid;
+  place-items: center;
+  background: #2c9ab7;
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 700;
+}
+
 .member-dashboard-header h1 {
   margin: 0;
   font-size: 32px;
@@ -332,6 +357,12 @@
 
   .member-dashboard-header h1 {
     font-size: 26px;
+  }
+
+  .member-dashboard-avatar {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
   }
 
   .member-signout-button {

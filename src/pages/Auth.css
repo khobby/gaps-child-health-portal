@@ -207,6 +207,24 @@
   background: #eef5f9;
 }
 
+.auth-portal-switch {
+  display: block;
+  margin: 20px auto 0;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--medical-blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.auth-portal-switch:hover {
+  color: var(--teal);
+  text-decoration: underline;
+}
+
 .auth-divider {
   display: flex;
 

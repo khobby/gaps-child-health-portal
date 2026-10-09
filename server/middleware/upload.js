@@ -6,9 +6,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Store uploaded images in:
-// server/uploads/
-const uploadDir = path.join(__dirname, "..", "uploads");
+const uploadDir =
+  process.env.UPLOAD_DIR || path.join(__dirname, "..", "uploads");
 
 // Create uploads folder automatically if it doesn't exist
 if (!fs.existsSync(uploadDir)) {

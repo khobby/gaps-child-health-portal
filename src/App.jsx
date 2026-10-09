@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import MemberDashboard from "./pages/MemberDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import MemberResourcePage from "./pages/MemberResourcePage";
+import { getImageUrl } from "./utils/imageUrl";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -23,6 +24,7 @@ function App() {
   const [research, setResearch] = useState([]);
 
   const [contentLoading, setContentLoading] = useState(true);
+  const [contentLoadedAt, setContentLoadedAt] = useState(0);
 
   /* --------------------------------
      RESTORE MEMBER SESSION
@@ -53,6 +55,10 @@ function App() {
      LOAD PUBLIC CONTENT
   -------------------------------- */
   useEffect(() => {
+    if (page !== "home") {
+      return;
+    }
+
     async function loadPublicContent() {
       setContentLoading(true);
 
@@ -87,12 +93,50 @@ function App() {
       } catch (error) {
         console.error("Unable to load public GAPS content:", error);
       } finally {
+        setContentLoadedAt(Date.now());
         setContentLoading(false);
       }
     }
 
     loadPublicContent();
-  }, []);
+  }, [page]);
+
+  const announcementWindow = 7 * 24 * 60 * 60 * 1000;
+  const now = contentLoadedAt;
+  const homepageAnnouncements = [
+    ...events.map((event) => ({
+      id: `event-${event.id}`,
+      kind: "EVENT",
+      title: event.title,
+      description: event.description,
+      imageUrl: event.image_url,
+      publishedAt: event.created_at,
+      date: event.event_date,
+      location: event.location,
+      sectionId: "events"
+    })),
+    ...news.map((article) => ({
+      id: `news-${article.id}`,
+      kind: "NEWS",
+      title: article.title,
+      description: article.content,
+      imageUrl: article.image_url,
+      publishedAt: article.published_at,
+      sectionId: "news"
+    }))
+  ]
+    .filter((announcement) => {
+      const publishedAt = Date.parse(announcement.publishedAt);
+      return (
+        Number.isFinite(publishedAt) &&
+        publishedAt <= now &&
+        now - publishedAt < announcementWindow
+      );
+    })
+    .sort(
+      (first, second) =>
+        Date.parse(second.publishedAt) - Date.parse(first.publishedAt)
+    );
 
   /* --------------------------------
      REVEAL ANIMATIONS
@@ -147,6 +191,16 @@ function App() {
 
   function openLogin() {
     setPage("login");
+    closeMobileMenu();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+  function openAdminLogin() {
+    setPage("admin-login");
     closeMobileMenu();
 
     window.scrollTo({
@@ -262,6 +316,18 @@ function App() {
         onLogin={handleLogin}
         onBack={goHome}
         onRegister={openRegister}
+        onSwitchPortal={openAdminLogin}
+      />
+    );
+  }
+
+  if (page === "admin-login") {
+    return (
+      <Login
+        portal="admin"
+        onLogin={handleLogin}
+        onBack={goHome}
+        onSwitchPortal={openLogin}
       />
     );
   }
@@ -315,9 +381,10 @@ function App() {
     if (!member || member.role !== "admin") {
       return (
         <Login
+          portal="admin"
           onLogin={handleLogin}
           onBack={goHome}
-          onRegister={openRegister}
+          onSwitchPortal={openLogin}
         />
       );
     }
@@ -451,6 +518,71 @@ function App() {
 
       {/* HERO */}
       <main>
+
+        {!contentLoading && homepageAnnouncements.length === 0 && (
+          <section className="homepage-announcements-empty">
+            <p>New GAPS events and news will appear here for seven days.</p>
+          </section>
+        )}
+
+        {homepageAnnouncements.length > 0 && (
+          <section
+            className="homepage-announcements"
+            aria-label="Recent announcements"
+          >
+            <div className="container">
+              <div className="homepage-announcements-heading">
+                <span>RECENT UPDATES</span>
+                <h2>Latest from GAPS</h2>
+                <p>New events and news are highlighted here for seven days.</p>
+              </div>
+
+              <div className="homepage-announcements-list">
+                {homepageAnnouncements.map((announcement) => (
+                  <article
+                    className="homepage-announcement-card"
+                    key={announcement.id}
+                  >
+                    {announcement.imageUrl && (
+                      <img
+                        className="homepage-announcement-image"
+                        src={getImageUrl(announcement.imageUrl)}
+                        alt=""
+                        loading="lazy"
+                      />
+                    )}
+
+                    <div className="homepage-announcement-content">
+                      <span className="homepage-announcement-kind">
+                        {announcement.kind}
+                      </span>
+                      <h3>{announcement.title}</h3>
+                      {announcement.description && (
+                        <p>{announcement.description}</p>
+                      )}
+                      {(announcement.date || announcement.location) && (
+                        <p className="homepage-announcement-meta">
+                          {announcement.date &&
+                            formatEventDate(announcement.date)}
+                          {announcement.date && announcement.location && " · "}
+                          {announcement.location}
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          scrollToSection(announcement.sectionId)
+                        }
+                      >
+                        View {announcement.kind === "EVENT" ? "event" : "news"}
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="hero">
           <div className="hero-glow hero-glow-one"></div>
@@ -1521,7 +1653,7 @@ function App() {
 
                         {item.image_url ? (
                           <img
-                            src={item.image_url}
+                            src={getImageUrl(item.image_url)}
                             alt={item.title}
                           />
                         ) : (
