@@ -35,8 +35,9 @@ services:
       - key: UPLOAD_DIR
         value: /tmp/gaps-uploads
 
-  - type: static
+  - type: web
     name: gaps-childhealth-web
+    runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     envVars:
